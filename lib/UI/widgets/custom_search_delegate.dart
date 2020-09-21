@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:hoos/UI/routes/error_screen.dart';
+import 'package:hoos/UI/routes/map_gallery.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   final suggestions = [
@@ -9,6 +11,9 @@ class CustomSearchDelegate extends SearchDelegate {
     'التوزيع',
     'الهيتينيات',
     'الهوس الكبير',
+    'تينين',
+    'تين أويه إنثوك',
+    'لبش الهوس الأول'
   ];
   final recent = ['تينين', 'تين أويه إنثوك', 'لبش الهوس الأول'];
   @override
@@ -20,29 +25,32 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 
   @override
-  String get searchFieldLabel => '';
-
-  @override
-  List<Widget> buildActions(BuildContext context) => [
-        IconButton(
-            icon: Icon(
-              Icons.close,
-            ),
-            onPressed: () => query = '')
-      ];
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () => query = '',
+        tooltip: 'حذف البحث',
+      )
+    ];
+  }
 
   @override
   Widget buildLeading(BuildContext context) => IconButton(
       icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,
-        color: Get.theme.iconTheme.color,
-      ),
+          icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
       onPressed: () => close(context, null));
-
-  // TODO: implement buildResults
   @override
-  Widget buildResults(BuildContext context) => Scaffold();
+  Widget buildResults(BuildContext context) {
+    if (suggestions.contains(query))
+      return MapGallery(
+          showAppbar: false,
+        title: query,
+      );
+    return ErrorScreen(
+        error:
+            "الرجاء الإختيار من قائمة الإقتراحات و الإلتزام بطريقة البحث الموجودة في صفحة البحث");
+  }
 
   @override
   Widget buildSuggestions(BuildContext context) {

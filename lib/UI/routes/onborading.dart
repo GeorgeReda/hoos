@@ -37,6 +37,7 @@ class _OnBoardingState extends State<OnBoarding> {
             body: 'باسم الآب و الإبن و الروح القدس\nإله واحد آمين',
             image: Center(
               child: ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
                   child: Image.asset(
                 'images/church.jpg',
                 height: Get.height / 2,

@@ -23,7 +23,7 @@ class MapsSortScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocBuilder(
-          bloc: _bloc,
+          cubit: _bloc,
           builder: (context, state) {
             if (state is MapsSortInitial)
               return Constants.circularProgressIndicator;
@@ -34,6 +34,7 @@ class MapsSortScreen extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 itemCount: state.data.length,
                 itemBuilder: (context, index) => MapsTile(
+                    showAppbar: true,
                   title: state.data[index],
                 ),
               );

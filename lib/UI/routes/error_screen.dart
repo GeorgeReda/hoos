@@ -1,30 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../../constants.dart';
+import 'package:get/get.dart';
 
 class ErrorScreen extends StatelessWidget {
-  const ErrorScreen({Key key, this.error}) : super(key: key);
+  const ErrorScreen({
+    Key key,
+    this.error,
+    this.icon = Icons.error,
+  }) : super(key: key);
   final String error;
+  final IconData icon;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            FaIcon(
-              FontAwesomeIcons.exclamationCircle,
-              size: 24,
-              color: Constants.PRIMARY_COLOR,
-            ),
-            SizedBox(height: 20),
-            Text(
-              error,
-              style: Theme.of(context).primaryTextTheme.bodyText2,
-            )
-          ],
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                icon,
+                size: MediaQuery.of(context).size.width / 3,
+                color: Colors.grey,
+              ),
+              SizedBox(height: 20),
+              Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '$error',
+                  textAlign: TextAlign.center,
+                  textDirection: TextDirection.rtl,
+                  style: TextStyle(
+                    color: Get.isDarkMode
+                        ? Theme.of(context).textTheme.bodyText2.color
+                        : Colors.black54,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ))
+            ],
+          ),
         ),
       ),
     );

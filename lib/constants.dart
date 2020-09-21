@@ -76,4 +76,17 @@ class Constants {
           style: TextStyle(color: LIGHT_BG_COLOR),
         )),
   ];
+  static DrawerHeader buildDrawerHeader(String title) {
+    return DrawerHeader(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25))),
+      child: Center(
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
 }

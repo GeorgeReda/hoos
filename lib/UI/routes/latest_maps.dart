@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hoos/UI/widgets/map_tile.dart';
-import 'package:hoos/UTH/blocs/sort_bloc/maps_sort_bloc.dart';
 
 import '../../constants.dart';
 import 'error_screen.dart';
@@ -16,11 +16,9 @@ class LatestMapsScreen extends StatelessWidget {
         super(key: key);
 
   final GlobalKey<InnerDrawerState> _drawerKey;
-  final MapsSortBloc _bloc = MapsSortBloc();
 
   @override
   Widget build(BuildContext context) {
-    _bloc.add(LatestMaps());
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -44,22 +42,27 @@ class LatestMapsScreen extends StatelessWidget {
           ],
         ),
         body: SafeArea(
-          child: BlocBuilder(
-            bloc: _bloc,
-            builder: (context, state) {
-              if (state is MapsSortInitial)
-                return Constants.circularProgressIndicator;
-              else if (state is MapsSortFailure)
-                return ErrorScreen(error: state.error);
-              else if (state is MapsSortDone)
-                return ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    itemCount: state.data.length,
-                    itemBuilder: (context, index) =>
-                        MapsTile(title: state.data[index]));
-              return Container();
-            },
-          ),
+          child: ValueListenableBuilder(
+              valueListenable: Hive.box('latest').listenable(),
+              builder: (context, Box value, child) {
+                return value.values.toList().isEmpty
+                    ? ErrorScreen(
+                        icon: Icons.watch_later,
+                        error: 'لم يتم الدخول على أي خرائط مؤقتا',
+                      )
+                    : ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: value.values.toList().length,
+                        itemBuilder: (context, index) {
+                          String title = value.values
+                              .toList()
+                              .reversed
+                              .toSet()
+                              .toList()[index];
+                          return MapsTile(title: title,showAppbar: true,);
+                        },
+                      );
+              }),
         ));
   }
 }

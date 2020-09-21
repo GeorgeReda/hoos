@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:hoos/UI/routes/search.dart';
+import 'package:hoos/UI/routes/settings_screen.dart';
 import 'package:hoos/UI/widgets/drawer.dart';
 import 'package:hoos/constants.dart';
 
@@ -34,23 +35,17 @@ class _MainScreenState extends State<MainScreen> {
     return ModDrawer(
         drawerKey: _drawerKey,
         scaffold: Scaffold(
-          body: PageView(
-            controller: _controller,
-            physics: PageScrollPhysics(),
-            onPageChanged: (index) => setState(() => _currentIndex = index),
-            children: <Widget>[
-              Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  title: Text(
-                    'الإعدادات',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                ),
-              ),
-              SearchPage(),
-              LatestMapsScreen(drawerKey: _drawerKey),
-            ],
+          body: SafeArea(
+            child: PageView(
+              controller: _controller,
+              physics: PageScrollPhysics(),
+              onPageChanged: (index) => setState(() => _currentIndex = index),
+              children: <Widget>[
+                SettingsScreen(),
+                SearchPage(),
+                LatestMapsScreen(drawerKey: _drawerKey),
+              ],
+            ),
           ),
           bottomNavigationBar: Theme(
             data: Theme.of(context)

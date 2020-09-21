@@ -15,7 +15,6 @@ class MapsSortBloc extends Bloc<MapsSortEvent, MapsSortState> {
   ) async* {
     if (event is LatestMaps) {
       yield MapsSortInitial();
-
       yield MapsSortDone([
         'غولغوثا',
         'بيك إثرونوس',
